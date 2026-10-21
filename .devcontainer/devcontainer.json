@@ -1,0 +1,33 @@
+{
+  // AZ-400 lab environment for GitHub Codespaces.
+  // Replaces the course's "install everything on your machine" steps.
+  "name": "AZ-400 Lab",
+
+  // Debian-based image that already ships Python 3.12, pip and Git
+  "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bookworm",
+
+  "features": {
+    // Azure CLI plus the Bicep compiler (used by infra/main.bicep)
+    "ghcr.io/devcontainers/features/azure-cli:1": { "installBicep": true },
+    // GitHub CLI (gh), used by the GitHub Setup lab
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+
+  "customizations": {
+    "vscode": {
+      // The six extensions from Step 4 of the course's lab guide
+      "extensions": [
+        "ms-azure-devops.azure-pipelines",
+        "ms-azuretools.vscode-azureresourcegroups",
+        "ms-azuretools.vscode-bicep",
+        "github.vscode-github-actions",
+        "GitHub.vscode-pull-request-github",
+        "redhat.vscode-yaml"
+      ]
+    }
+  },
+
+  // Runs once when the container is first built:
+  // zip is needed by deploy.sh, unzip for the course files, azure-devops adds the az devops/repos/pipelines commands
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y zip unzip && az extension add --name azure-devops --only-show-errors"
+}
